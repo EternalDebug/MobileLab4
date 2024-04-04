@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab4todolist.databinding.TodoTaskBinding
@@ -27,7 +28,7 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
             txt.setOnClickListener {
                 CuPoRos = pos;
 
-                //findNavController().navigate(R.id.action_FirstFragment_to_thirdFragment)
+                txt.findNavController().navigate(R.id.action_FirstFragment_to_thirdFragment)
             }
             val btn = itemView.findViewById<Button>(R.id.buttonDel);
             btn.setOnClickListener(param)
