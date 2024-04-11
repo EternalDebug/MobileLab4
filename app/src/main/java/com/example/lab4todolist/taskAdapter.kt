@@ -11,17 +11,20 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab4todolist.databinding.TodoTaskBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 var CuPoRos: Int = 0;
-val taskList = ArrayList<ToDoTask>()
+//val taskList = tdViewModel!!.notes//ArrayList<ToDoTask>()
 
 class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
 
     class TaskHolder(item: View, lam: (Int) -> Unit) : RecyclerView.ViewHolder(item) {
         val binding = TodoTaskBinding.bind(item)
-        fun bind(task: ToDoTask, pos: Int, param: (Any) -> Unit) = with(binding) {
-            checkTask.isChecked = task.status;
+        fun bind(task: TaskDB, pos: Int, param: (Any) -> Unit) = with(binding) {
+            checkTask.isChecked = task.status!!;
             taskField.setText(task.task);
 
             val txt = itemView.findViewById<TextView>(R.id.taskField)
@@ -35,7 +38,12 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
             val chbox = itemView.findViewById<CheckBox>(R.id.checkTask)
             chbox.setOnClickListener{
-                taskList[pos].status = !taskList[pos].status;
+                //taskList.[pos].status = !taskList[pos].status;
+                //tdViewModel!!.update(task);
+                task.status = !task.status!!
+                CoroutineScope(Dispatchers.IO).launch{
+                    Repka.update(task);
+                }
 
             }
 
@@ -50,25 +58,40 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return taskList.size;
+        /*if (tdViewModel!!.notes.value == null) {
+            return 0
+        }
+        else//tdViewModel!!.notes.value!!.size;
+        {
+            return tdViewModel!!.notes.value!!.size;
+        }*/
+        val res = Repka.getAll()
+        return res.size
     }
 
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
-        holder.bind(taskList[position], position) { i -> removeTask(position) }
+        //holder.bind(tdViewModel!!.notes.value!![position], position) { i -> removeTask(position) }
+        holder.bind(Repka.getAll()[position], position) { i -> removeTask(position) }
     }
 
-    fun addTask(tsk: ToDoTask) {
-        taskList.add(tsk)
+    fun addTask(tsk: TaskDB) {
+        //taskList.add(tsk)
+        //tdViewModel!!.insert(tsk)
+        CoroutineScope(Dispatchers.IO).launch{
+        Repka.insert(tsk)}
         notifyDataSetChanged()
     }
 
     fun removeTask(position: Int) {
-        taskList.removeAt(position)
+        //taskList.removeAt(position)
+        CoroutineScope(Dispatchers.IO).launch{
+            val tsk = Repka.getAll()[position]
+            Repka.delete(tsk)
+        }
+        //val tsk = tdViewModel!!.notes.value!![position]
+        //tdViewModel!!.delete(tsk)
         notifyDataSetChanged()
     }
 
-    fun addTaskAnotherFrag(tsk: ToDoTask) {
-        taskList.add(tsk)
-    }
 }
 

@@ -49,7 +49,7 @@ class SecondFragment : Fragment() {
         val name = _binding!!.editName.text.toString()
         val info = _binding!!.editInfo.text.toString()
         val check = _binding!!.checkTask2.isChecked
-        adaptator.addTask(ToDoTask(check, name, info));
+        adaptator.addTask(TaskDB(0, name, info, check));
         findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
     }
 }

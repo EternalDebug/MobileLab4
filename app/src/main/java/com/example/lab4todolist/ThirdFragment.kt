@@ -35,12 +35,20 @@ class ThirdFragment : Fragment() {
         var name = "Наименование задачи: ";
         var info = "Детальная информация о задаче: ";
         var ch = "Выполнена ли задача: ";
-        if (CuPoRos < taskList.size && taskList.size != 0)
+        /*if (CuPoRos < tdViewModel!!.notes.value!!.size && tdViewModel!!.notes.value!!.size != 0)
         {
-            name += taskList[CuPoRos].task;
-            info += taskList[CuPoRos].info;
-            ch += taskList[CuPoRos].status.toString();
+            name += tdViewModel!!.notes.value!![CuPoRos].task;
+            info += tdViewModel!!.notes.value!![CuPoRos].info;
+            ch += tdViewModel!!.notes.value!![CuPoRos].status.toString();
+        }*/
+
+        if (CuPoRos < Repka.getAll().size && Repka.getAll().size != 0)
+        {
+            name += Repka.getAll()[CuPoRos].task;
+            info += Repka.getAll()[CuPoRos].info;
+            ch += Repka.getAll()[CuPoRos].status.toString();
         }
+
         binding.textView2.text = name;
         binding.textView3.text = info;
         binding.textView4.text = ch;

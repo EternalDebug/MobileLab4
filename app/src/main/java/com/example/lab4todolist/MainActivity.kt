@@ -9,7 +9,14 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.room.Room
+import androidx.room.Room.databaseBuilder
 import com.example.lab4todolist.databinding.ActivityMainBinding
+
+//var tasksDBList = listOf<TaskDB>()
+//lateinit var taskdbDao: TaskDBDao;
+//var tdViewModel: TDViewModel? = null
+lateinit var Repka: AppRepository;
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +25,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val database = databaseBuilder(this, AppDatabase::class.java, "tddb").fallbackToDestructiveMigration().build()
+        //val repository = AppRepository(database.getTaskDao())
+        Repka = AppRepository(database.getTaskDao())
+        //tdViewModel = TDViewModel(repository)
+
+        /*val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "database-name"
+        ).build()*/
+
+        //taskdbDao = db.taskDao()
+        //tasksDBList  = taskdbDao.getAll()
+
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -30,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        initTest();
+        //initTest();
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -56,18 +78,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initTest(){
-        adaptator.addTask(ToDoTask(false, "Что-то", "пусто"))
-        adaptator.addTask(ToDoTask(false, "как-то", "пусто"))
-        adaptator.addTask(ToDoTask(true, "", "пусто"))
-        adaptator.addTask(ToDoTask(false, "пусто", "пусто"))
-        adaptator.addTask(ToDoTask(true, "пусто", "пусто"))
-        adaptator.addTask(ToDoTask(true, "пусто", "пусто"))
-        adaptator.addTask(ToDoTask(true, "пусто", "пусто"))
-        adaptator.addTask(ToDoTask(true, "пусто", "пусто"))
-        adaptator.addTask(ToDoTask(true, "пусто", "пусто"))
-        adaptator.addTask(ToDoTask(true, "пусто", "пусто"))
-        adaptator.addTask(ToDoTask(true, "пусто", "пусто"))
-        adaptator.addTask(ToDoTask(true, "пусто", "пусто"))
-        adaptator.addTask(ToDoTask(true, "пусто", "пусто"))
+        adaptator.addTask(TaskDB(0, "name", "info", true));
     }
 }
